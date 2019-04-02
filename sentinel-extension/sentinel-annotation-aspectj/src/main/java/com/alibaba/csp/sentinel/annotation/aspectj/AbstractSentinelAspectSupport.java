@@ -78,7 +78,7 @@ public abstract class AbstractSentinelAspectSupport {
     }
 
     protected void traceException(Throwable ex, SentinelResource annotation) {
-        if (isTracedException(ex, annotation.exceptionsToTrace()) && !isIgnoreTracedException(ex, annotation.exceptionsToIgnoreTrace())) {
+        if (isTracedException(ex, annotation.exceptionsToTrace()) && isIgnoreTracedException(ex, annotation.exceptionsToIgnoreTrace())) {
             Tracer.trace(ex);
         }
     }
@@ -110,7 +110,7 @@ public abstract class AbstractSentinelAspectSupport {
      * @return true if it should be ignore traced, otherwise false
      */
     private boolean isIgnoreTracedException(Throwable ex, Class<? extends Throwable>[] exceptionsToIgnoreTrace) {
-        return isTracedException(ex, exceptionsToIgnoreTrace);
+        return !isTracedException(ex, exceptionsToIgnoreTrace);
     }
 
     private boolean isDegradeFailure(/*@NonNull*/ BlockException ex) {
